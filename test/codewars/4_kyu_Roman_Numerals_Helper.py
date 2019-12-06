@@ -12,10 +12,10 @@ class RomanNumerals:
     @classmethod
     def from_roman(cls, roman_number):
         inner_dict = dict(zip(RomanNumerals.roman, RomanNumerals.arabian))
-        result = sum([inner_dict[i] for i in roman_number])
+        result = sum([inner_dict[i] for i in roman_number])  # Sum all numbers
         for i in range(1, len(roman_number)):
             if inner_dict[roman_number[i - 1]] < inner_dict[roman_number[i]]:
-                result -= inner_dict[roman_number[i - 1]] * 2
+                result -= inner_dict[roman_number[i - 1]] * 2  # Subtract reversed numbers
         return result
 
     @classmethod
