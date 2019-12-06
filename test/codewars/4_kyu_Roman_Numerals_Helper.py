@@ -1,40 +1,33 @@
-roman = ['M', 'D', 'C', 'L', 'X', 'V', 'I']
-arabian = [1000, 500, 100, 50, 10, 5, 1]
+"""
+https://www.codewars.com/kata/roman-numerals-helper/train/python
+to_roman method based on floor division
+from_roman method sums up numbers gained from dictionary. For reversed numbers such as 'CM' or 'CD' the fist
+numbers then is subtracted twice.
+"""
 
 
 class RomanNumerals:
-    pass
-
-    @staticmethod
-    def from_roman(roman_number):
-        inner_dict = dict(zip(roman, arabian))
-        i, result = 0, 0
-        while i <= len(roman_number) - 2:
-            if inner_dict[roman_number[i]] >= inner_dict[roman_number[i + 1]]:
-                result += inner_dict[roman_number[i]]
-            else:
-                result -= inner_dict[roman_number[i]]
-            i += 1
-        result += inner_dict[roman_number[i]]  # last number
+    roman = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I']
+    arabian = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+    @classmethod
+    def from_roman(cls, roman_number):
+        inner_dict = dict(zip(RomanNumerals.roman, RomanNumerals.arabian))
+        result = sum([inner_dict[i] for i in roman_number])
+        for i in range(1, len(roman_number)):
+            if inner_dict[roman_number[i - 1]] < inner_dict[roman_number[i]]:
+                result -= inner_dict[roman_number[i - 1]] * 2
         return result
 
-    @staticmethod
-    def to_roman(arabian_number):
-        inner_dict = dict(zip(arabian, roman))
+    @classmethod
+    def to_roman(cls, arabian_number):
         roman_number = ''
-        le = len(str(arabian_number))
-        for i in range(le - 1, -1, -1):
-            test_number = arabian_number // 10 ** i
-            if test_number == 9:
-                roman_number += inner_dict[10 ** i] + inner_dict[10 ** (i + 1)]
-            elif 5 <= test_number <= 8:
-                roman_number += inner_dict[5 * 10 ** i] + inner_dict[10 ** i] * (test_number - 5)
-            elif test_number == 4:
-                roman_number += inner_dict[10 ** i] + inner_dict[5 * 10 ** i]
-            else:
-                roman_number += inner_dict[10 ** i] * test_number
-            arabian_number %= 10 ** i
+        for index, item in enumerate(RomanNumerals.arabian):
+            roman_number += RomanNumerals.roman[index] * (arabian_number // item)
+            arabian_number %= item
         return roman_number
 
 
+print(RomanNumerals.to_roman(4))
+print(RomanNumerals.from_roman('MCMXC'))
 print(RomanNumerals.to_roman(1909))
+print(RomanNumerals.from_roman('IV'))
