@@ -25,9 +25,3 @@ class RomanNumerals:
             roman_number += RomanNumerals.roman[index] * (arabian_number // item)
             arabian_number %= item
         return roman_number
-
-
-print(RomanNumerals.to_roman(4))
-print(RomanNumerals.from_roman('MCMXC'))
-print(RomanNumerals.to_roman(1909))
-print(RomanNumerals.from_roman('IV'))
