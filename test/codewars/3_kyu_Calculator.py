@@ -1,3 +1,6 @@
+"""
+https://www.codewars.com/kata/calculator
+"""
 import operator
 import re
 # Operation patterns assume to find positive or negative integer or float numbers to the left
