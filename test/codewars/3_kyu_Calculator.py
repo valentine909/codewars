@@ -1,9 +1,9 @@
 import operator
 import re
-pattern_addition = re.compile(r"[0-9.,]+\s\+\s[0-9.,]+")
-pattern_subtraction = re.compile(r"[0-9.,]+\s\-\s[0-9.,]+")
-pattern_multiplication = re.compile(r"[0-9.,]+\s\*\s[0-9.,]+")
-pattern_division = re.compile(r"[0-9.,]+\s/\s[0-9.,]+")
+pattern_addition = re.compile(r"\-?[0-9.,]+\s\+\s\-?[0-9.,]+")
+pattern_subtraction = re.compile(r"\-?[0-9.,]+\s\-\s\-?[0-9.,]+")
+pattern_multiplication = re.compile(r"\-?[0-9.,]+\s\*\s\-?[0-9.,]+")
+pattern_division = re.compile(r"\-?[0-9.,]+\s/\s\-?[0-9.,]+")
 pattern_brackets = re.compile(r"\([^\(\)]+\)")
 lib = [[pattern_multiplication, ' * ', operator.mul], [pattern_division, ' / ', operator.truediv],
        [pattern_addition, ' + ', operator.add], [pattern_subtraction, ' - ', operator.sub]]
@@ -42,10 +42,7 @@ def solve(substring):
 a = "((1254 + 3) * 2 / 2 + 3) * (4 + 5) / 6"
 b = "1254 + 3 * 2 / 2 + 3 * 4"
 c = "2 - 3 - 4 * -5"
-
-p = re.findall(pattern_brackets, a)
-print(p)
-print(p[0][1:len(p[0]) - 1])
+d = "2 + 3 * 4 / 3 - 6 / 3 * 3 + 8"
 
 print(eval(b))
 print(solve(b))
@@ -56,4 +53,5 @@ print(find_brackets(a))
 print(eval(c))
 print(find_brackets(c))
 
-print(c.split(' * '))
+print(eval(d))
+print(find_brackets(d))
