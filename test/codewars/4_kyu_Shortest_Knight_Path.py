@@ -1,41 +1,47 @@
 """
 https://www.codewars.com/kata/shortest-knight-path/train/python
-max moves = 6
+BFS algorithm.
 """
-possible_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+from collections import deque
+N = 8
 
 
 def knight(p1, p2):
-    x, y = subtract_points(p1, p2)
-    _, _, moves = count_moves(x, y, 0)
+    start, end = convert_positions(p1, p2)
+    moves = count_moves(start, end)
     return moves
 
 
-def subtract_points(p1, p2):
-    y = abs(int(p1[1]) - int(p2[1]))
-    x = abs(ord(p1[0]) - ord(p2[0]))
-    return x, y
+def convert_positions(p1, p2):
+    start = (ord(p1[0]) - ord("a") + 1, int(p1[1]))
+    end = (ord(p2[0]) - ord("a") + 1, int(p2[1]))
+    return start, end
 
 
-def count_moves(x, y, count):
-    if x + y < 3:
-        x, y = max(x, y), min(x, y)
-        if x == 0:
-            pass
-        elif x == 1:
-            count += 3
-        elif x == 2:
-            count += 3
-        else:
-            count += 2
-        return x, y, count
+def is_right(position, table):
+    if (1 <= position[0] <= N) and (1 <= position[1] <= N) and position not in table:
+        return True
     else:
-        x, y = max(x, y), min(x, y)
-        _, _, count = count_moves(abs(x - 2), abs(y - 1), count + 1)
-        return x, y, count
+        return False
+
+
+def count_moves(start, end):
+    possible_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+    history = [start]
+    queue = deque()
+    queue.append((start, 0))
+    while queue:
+        point, moves = queue.popleft()
+        if point == end:
+            return moves
+        for i in possible_moves:
+            position = (point[0] + i[0], point[1] + i[1])
+            if is_right(position, history):
+                history.append(position)
+                queue.append((position, moves + 1))
 
 
 
 
 print(knight("a1", "f1"))
-print(subtract_points("a1", "f1"))
+# print(convert_positions("a1", "f1"))
