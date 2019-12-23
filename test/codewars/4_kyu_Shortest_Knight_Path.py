@@ -3,22 +3,33 @@ https://www.codewars.com/kata/shortest-knight-path/train/python
 BFS algorithm.
 """
 from collections import deque
-N = 8
+N = 8  # Chess desk dimensions.
 
 
 def knight(p1, p2):
-    start, end = convert_positions(p1, p2)
-    moves = count_moves(start, end)
-    return moves
+    """
+    Main function. Takes starting and ending positions in algebraic notation. Returns minimum number of moves.
+    :param p1: Starting position, ex. "a1"
+    :param p2: Ending position, ex. "f1"
+    :return: Number of moves. Integer.
+    """
+    start, end = map(convert_positions, (p1, p2))
+    return count_moves(start, end)
 
 
-def convert_positions(p1, p2):
-    start = (ord(p1[0]) - ord("a") + 1, int(p1[1]))
-    end = (ord(p2[0]) - ord("a") + 1, int(p2[1]))
-    return start, end
+def convert_positions(point):
+    """
+    Converts desk position in algebraic notation to integer coordinates as tuple
+    """
+    return ord(point[0]) - 96, int(point[1])
 
 
 def is_right(position, table):
+    """
+    Checks if position is within the desk and hasn't visited yet.
+    :param position: Current position. Tuple.
+    :param table: Global history of moves. List.
+    """
     if (1 <= position[0] <= N) and (1 <= position[1] <= N) and position not in table:
         return True
     else:
@@ -26,6 +37,10 @@ def is_right(position, table):
 
 
 def count_moves(start, end):
+    """
+    All possible moves are added to queue and processed FIFO.
+    When the match with end position is found returns number of moves.
+    """
     possible_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
     history = [start]
     queue = deque()
@@ -39,9 +54,3 @@ def count_moves(start, end):
             if is_right(position, history):
                 history.append(position)
                 queue.append((position, moves + 1))
-
-
-
-
-print(knight("a1", "f1"))
-# print(convert_positions("a1", "f1"))
